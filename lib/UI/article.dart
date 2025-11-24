@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:ragersneakers/models/articles.dart';
+import 'package:ragersneakers/UI/detail.dart';
+
+class ListArticle extends StatelessWidget {
+  const ListArticle({super.key});
+
+  Future<List<Articles>> fetchArticles() async {
+    try {
+      final response = await http
+        .get(Uri.parse('https://fakeapi.platzi.com'))
+        .timeout(const Duration(seconds: 5));
+      
+      if (response.statusCode == 200){
+        final List<dynamic> jsonList = json.decode(response.body);
+
+        return jsonList.map((json) {
+          return Articles(
+            id: json['id'] ?? 0,
+            title: json['title'] ?? 'Future arrivée',
+            price: json['price'] ?? 0.0,
+            description: json['description'] ?? '',
+          );
+        }).toList();
+      } else {
+        debugPrint('Status code: ${response.statusCode}');
+        return _mockArticles();
+      }
+    } catch (e){
+      debugPrint('Erreur http: $e')  ;
+      return _mockArticles();
+    }    
+  }
+
+  @override 
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Articles>>(
+      future: fetchArticles(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child:CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(child: Text('Erreur: ${snapshot.error}'));
+        }
+
+        final articles = snapshot.data ?? [];
+
+        return ListView.builder(
+          itemCount: articles.length,
+          itemBuilder: (context, index) {
+            final article = articles[index];
+            return Card(
+              color: Theme.of(context).cardColor,
+              elevation: 7,
+              margin: const EdgeInsets.all(10),
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: const Color.fromARGB(255, 0, 247, 226),
+                  child: Text(article.id.toString()),
+                ),
+                title: Text(article.title),
+                subtitle: Text(article.price.toString()),
+                trailing: IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Detail(article: article),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+List<Articles> _mockArticles() {
+  return [
+      Articles(
+      id: 0,
+      title: 'Maintenance',
+      price: 0,
+      description: 'Maintenance',
+    ),
+  ];
+}
