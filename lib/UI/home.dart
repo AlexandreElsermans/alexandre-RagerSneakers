@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'article.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,7 +11,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
-  // static List<Widget> pages = <Widget>[Article(), Catalogue(), Connection()];
+  static List<Widget> pages = <Widget>[ListArticle()];
 
   void _onItemTapped(int index){
     setState(() {
@@ -38,15 +39,10 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.article),
                 label: Text('Articles'),
               ),
-              NavigationRailDestination(
-                icon: Icon(Icons.store),
-                label: Text('Catalogue'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.person),
-                label: Text('Connexion'),
-              ),
             ],
+          ),
+          Expanded(
+            child: pages[_selectedIndex],
           )
         ]
       )
