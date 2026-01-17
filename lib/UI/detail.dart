@@ -9,48 +9,88 @@ class Detail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('${article.title} ')),
+      appBar: AppBar(title: Text('${article.title}')),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Card(
-              elevation: 7,
-              margin: const EdgeInsets.all(10),
-              child: ListTile(
-                leading: (const Icon(Icons.key)),
-                title: const Text('Identifiant'),
-                subtitle: Text('${article.id}'),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Card(
+                  elevation: 7,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const Icon(Icons.image, size: 30),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: 300,
+                          width: double.infinity,
+                          child: Image.network(
+                            article.img.isNotEmpty
+                                ? article.img.first
+                                : "https://via.placeholder.com/150",
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-            Card(
-              elevation: 7,
-              margin: const EdgeInsets.all(10),
-              child: ListTile(
-                leading: (const Icon(Icons.title)),
-                title: const Text('Titre de l\'article'),
-                subtitle: Text(article.title),
+              
+              const SizedBox(width: 16),
+              
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: [
+                    Card(
+                      elevation: 7,
+                      child: ListTile(
+                        leading: const Icon(Icons.title),
+                        title: Text(
+                          article.title,
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 10),
+                    
+                    Card(
+                      elevation: 7,
+                      child: ListTile(
+                        leading: const Icon(Icons.price_change_rounded),
+                        title: const Text('Prix'),
+                        subtitle: Text(
+                          '${article.price}€',
+                          style: const TextStyle(fontSize: 20, color: Colors.green, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 10),
+                    
+                    Card(
+                      elevation: 7,
+                      child: ListTile(
+                        leading: const Icon(Icons.description),
+                        title: const Text('Description'),
+                        subtitle: Text(
+                          article.description,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Card(
-              elevation: 7,
-              margin: const EdgeInsets.all(10),
-              child: ListTile(
-                leading: (const Icon(Icons.price_change_rounded)),
-                title: const Text('Prix de l\'article '),
-                subtitle: Text(article.price.toString()),
-              ),
-            ),
-
-            Card(
-              elevation: 7,
-              margin: const EdgeInsets.all(10),
-              child: ListTile(
-                leading: (const Icon(Icons.description)),
-                title: Text('Description de l\'article'),
-                subtitle: Text(article.description),
-              ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

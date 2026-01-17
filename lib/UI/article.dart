@@ -7,10 +7,17 @@ import 'package:ragersneakers/UI/detail.dart';
 class ListArticle extends StatelessWidget {
   const ListArticle({super.key});
 
+  List<String> parseImages(dynamic raw) {
+    if (raw == null) return [];
+    if (raw is String) return [raw];
+    if (raw is List) return raw.map((e) => e.toString()).toList();
+    return [];
+  }
+
   Future<List<Articles>> fetchArticles() async {
     try {
       final response = await http
-        .get(Uri.parse('https://fakeapi.platzi.com'))
+        .get(Uri.parse('https://api.escuelajs.co/api/v1/products'))
         .timeout(const Duration(seconds: 5));
       
       if (response.statusCode == 200){
@@ -22,6 +29,7 @@ class ListArticle extends StatelessWidget {
             title: json['title'] ?? 'Future arrivée',
             price: json['price'] ?? 0.0,
             description: json['description'] ?? '',
+            img: parseImages(json["images"]),
           );
         }).toList();
       } else {
@@ -59,13 +67,14 @@ class ListArticle extends StatelessWidget {
               margin: const EdgeInsets.all(10),
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: const Color.fromARGB(255, 0, 247, 226),
-                  child: Text(article.id.toString()),
+                  backgroundImage: NetworkImage(article.img.isNotEmpty
+                  ? article.img.first
+                  : "https://via.placeholder.com/150"),
                 ),
                 title: Text(article.title),
                 subtitle: Text(article.price.toString()),
                 trailing: IconButton(
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(Icons.more),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -91,6 +100,7 @@ List<Articles> _mockArticles() {
       title: 'Maintenance',
       price: 0,
       description: 'Maintenance',
+      img: ['https://via.placeholder.com/150'],
     ),
   ];
 }

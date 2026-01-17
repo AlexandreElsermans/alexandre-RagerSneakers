@@ -5,12 +5,14 @@ class Articles {
   String title;
   int price;
   String description;
+  List<String> img;
 
   Articles({
     required this.id,
     required this.title,
     required this.price,
     required this.description,
+    required this.img,
   });
 
   static Articles fromJson(Map<String, dynamic> json){
@@ -19,6 +21,7 @@ class Articles {
       title: json['title'],
       price: json['price'],
       description: json['description'],
+      img: json['image'],
     );
   }
 }
