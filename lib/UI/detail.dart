@@ -1,15 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:ragersneakers/models/articles.dart';
+import 'package:provider/provider.dart';
+import 'package:ragersneakers/models/favorites.dart';
 
 class Detail extends StatelessWidget {
   final Articles article;
+  final int productNo;
 
-  const Detail({super.key, required this.article});
+  const Detail(this.productNo,{super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('${article.title}')),
+      appBar: AppBar(
+        title: Text(article.title),
+        actions: [
+          Consumer<Favorites>(
+            builder: (context, favoritesList, child) {
+              final isFavorite =
+                  favoritesList.products.contains(article);
+
+              return IconButton(
+                key: Key('icon_$productNo'),
+                icon: Icon(
+                  isFavorite
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                ),
+                onPressed: () {
+                  if (isFavorite) {
+                    favoritesList.remove(article);
+                  } else {
+                    favoritesList.add(article);
+                  }
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        isFavorite
+                            ? 'Retiré des favories'
+                            : 'Ajouté aux favories',
+                      ),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

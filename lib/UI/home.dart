@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../models/favorites.dart';
 import 'article.dart';
+import 'favorites.dart';
 
 class Home extends StatefulWidget {
+  static String routeName = "/";
+
   const Home({super.key});
 
   @override
@@ -27,6 +33,20 @@ class _HomeState extends State<Home> {
           'Rager Sneakers', 
           style: Theme.of(context).textTheme.headlineMedium,
         ),
+        actions: <Widget>[
+          TextButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FavoritesPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.favorite_border),
+            label: const Text("Favories")
+          ),
+        ],
       ),
       body: Row(
         children: [

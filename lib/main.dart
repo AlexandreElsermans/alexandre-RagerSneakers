@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'UI/home.dart';
+import 'package:provider/provider.dart';
+import 'models/favorites.dart';
 
 void main() {
-  runApp(const MyStore());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Favorites(),
+      child: const MyStore(),
+      )
+  );
 }
 
 class MyStore extends StatelessWidget {

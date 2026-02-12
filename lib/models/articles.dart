@@ -3,7 +3,7 @@ class Articles {
 
   int id;
   String title;
-  int price;
+  double price;
   String description;
   List<String> img;
 

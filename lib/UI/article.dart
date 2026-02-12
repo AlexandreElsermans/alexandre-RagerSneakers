@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'favorites.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:ragersneakers/models/articles.dart';
@@ -79,7 +80,10 @@ class ListArticle extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Detail(article: article),
+                        builder: (context) => Detail(
+                          article.id,
+                          article: article
+                        ),
                       ),
                     );
                   },
