@@ -19,6 +19,7 @@ class MyStore extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Rager Sneakers',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true, // pour éviter que l'appbar soit transparent par défaut
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 28, 152, 209),

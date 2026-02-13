@@ -17,6 +17,6 @@ class Favorites extends ChangeNotifier {
   }
 
   bool isFavorite(Articles article) {
-    return _favoriteProducts.contains(article.id);
+    return _favoriteProducts.contains(article);
   }
 }

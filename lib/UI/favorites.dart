@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/articles.dart';
-import '../models/favorites.dart';
+import 'package:ragersneakers/models/articles.dart';
+import 'package:ragersneakers/models/favorites.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});
@@ -36,8 +36,10 @@ class FavoriteProductTile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Colors.primaries[articleUIFavorites.id % Colors.primaries.length],
-        ),
+                  backgroundImage: NetworkImage(articleUIFavorites.img.isNotEmpty
+                  ? articleUIFavorites.img.first
+                  : "https://via.placeholder.com/150"),
+                ),
         title: Text(
           articleUIFavorites.title,
           key: Key('favorites_text_$articleUIFavorites'),
