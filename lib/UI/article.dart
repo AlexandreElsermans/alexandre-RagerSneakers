@@ -79,7 +79,10 @@ class ListArticle extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Detail(article: article),
+                        builder: (context) => Detail(
+                          article.id,
+                          article: article
+                        ),
                       ),
                     );
                   },
