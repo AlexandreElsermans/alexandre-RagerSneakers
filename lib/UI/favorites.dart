@@ -12,7 +12,7 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favories'),
+        title: const Text('Favoris'),
       ),
       body : Consumer<Favorites>(
         builder: (context, value, child) => ListView.builder(
@@ -52,7 +52,7 @@ class FavoriteProductTile extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar
               (
-                content: const Text('Retiré des favories'),
+                content: Text('Retiré des favoris'),
                 duration: Duration(seconds: 1),
               ),
             );

@@ -18,7 +18,7 @@ class Detail extends StatelessWidget {
           Consumer<Favorites>(
             builder: (context, favoritesList, child) {
               final isFavorite =
-                  favoritesList.products.contains(article);
+                  favoritesList.isFavorite(article);
 
               return IconButton(
                 key: Key('icon_$productNo'),
