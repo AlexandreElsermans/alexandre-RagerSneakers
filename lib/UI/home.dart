@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'article.dart';
 import 'favorites.dart';
+import 'package:ragersneakers/UI/login.dart';
 
 class Home extends StatefulWidget {
   static String routeName = "/";
@@ -42,6 +43,18 @@ class _HomeState extends State<Home> {
             },
             icon: const Icon(Icons.favorite_border),
             label: const Text("Favories")
+          ),
+          TextButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.account_circle_outlined),
+            label: const Text("Profil")
           ),
         ],
       ),
