@@ -15,7 +15,16 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
-  static List<Widget> pages = <Widget>[ListArticle()];
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+    pages = <Widget>[
+      const ListArticle(),
+      const FavoritesPage(),
+    ];
+  }
 
   void _onItemTapped(int index){
     setState(() {
@@ -32,18 +41,6 @@ class _HomeState extends State<Home> {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         actions: <Widget>[
-          TextButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const FavoritesPage(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.favorite_border),
-            label: const Text("Favories")
-          ),
           TextButton.icon(
             onPressed: () {
               Navigator.push(
@@ -69,11 +66,15 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.article),
                 label: Text('Articles'),
               ),
+              NavigationRailDestination(
+                icon: Icon(Icons.favorite_border),
+                label: Text('Favoris'),
+              )
             ],
           ),
           Expanded(
             child: pages[_selectedIndex],
-          )
+          ),
         ]
       )
     );
