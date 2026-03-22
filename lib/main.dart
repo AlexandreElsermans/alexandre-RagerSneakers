@@ -2,14 +2,38 @@ import 'package:flutter/material.dart';
 import 'UI/home.dart';
 import 'package:provider/provider.dart';
 import 'models/favorites.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://zetkuplmaywroqddlwvl.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpldGt1cGxtYXl3cm9xZGRsd3ZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MDM1MjgsImV4cCI6MjA4Nzk3OTUyOH0.ykEzK7R_3tiLxvQ82NS63JyW0chtBEc66lMsBReE4TU',
+  );
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => Favorites(),
       child: const MyStore(),
-      )
+    )
   );
+}
+
+// Instance globale du client Supabase
+final supabase = Supabase.instance.client;
+
+extension ContextExtension on BuildContext {
+  void showSnackBar(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(this).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError
+          ? Theme.of(this).colorScheme.error
+          : Theme.of(this).snackBarTheme.backgroundColor,
+      ),
+    );
+  }
 }
 
 class MyStore extends StatelessWidget {
