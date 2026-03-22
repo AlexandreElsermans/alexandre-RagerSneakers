@@ -3,7 +3,6 @@ import 'UI/home.dart';
 import 'package:provider/provider.dart';
 import 'models/favorites.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:ragersneakers/UI/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

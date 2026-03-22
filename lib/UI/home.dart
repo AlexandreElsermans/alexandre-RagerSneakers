@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'article.dart';
 import 'favorites.dart';
 import 'package:ragersneakers/UI/login.dart';
+import 'package:ragersneakers/UI/profil.dart';
+import 'package:ragersneakers/main.dart';
 
 class Home extends StatefulWidget {
   static String routeName = "/";
@@ -32,6 +34,24 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _navigateToProfil() {
+    final user = supabase.auth.currentUser;
+
+    if (user != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ProfileForm())
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen())
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -42,14 +62,7 @@ class _HomeState extends State<Home> {
         ),
         actions: <Widget>[
           TextButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ),
-              );
-            },
+            onPressed: _navigateToProfil,
             icon: const Icon(Icons.account_circle_outlined),
             label: const Text("Profil")
           ),
