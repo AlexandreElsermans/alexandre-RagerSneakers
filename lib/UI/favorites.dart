@@ -11,9 +11,6 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favoris'),
-      ),
       body : Consumer<Favorites>(
         builder: (context, value, child) => ListView.builder(
           itemCount: value.products.length,
