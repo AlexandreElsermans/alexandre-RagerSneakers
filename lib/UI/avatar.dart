@@ -22,7 +22,7 @@ class _AvatarState extends State<Avatar> {
           Container(
             width: 150, height: 150,
             color: Colors.grey,
-            child: const Center(child: Text('No Image')),
+            child: const Center(child: Text('Pas d\'avatar')),
           )
         else
           Image.network(
@@ -32,7 +32,7 @@ class _AvatarState extends State<Avatar> {
           ),
           ElevatedButton(
             onPressed: _isLoading ? null : _upload,
-            child: const Text('Upload'),
+            child: const Text('Télécharger'),
           ),
       ],
     );
@@ -71,7 +71,7 @@ class _AvatarState extends State<Avatar> {
         context.showSnackBar(error.message, isError: true);
       }
     } catch (error) {
-      if (mounted) context.showSnackBar('Unexpected error occurred', isError: true);
+      if (mounted) context.showSnackBar('Erreur détectée', isError: true);
     }
     setState(() => _isLoading = false);
   }
