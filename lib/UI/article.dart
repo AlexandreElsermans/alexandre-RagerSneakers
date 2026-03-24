@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:ragersneakers/models/articles.dart';
 import 'package:ragersneakers/UI/detail.dart';
+import 'package:ragersneakers/utils/image_builder.dart';
 
 class ListArticle extends StatelessWidget {
   const ListArticle({super.key});
@@ -27,7 +28,7 @@ class ListArticle extends StatelessWidget {
           return Articles(
             id: json['id'] ?? 0,
             title: json['title'] ?? 'Future arrivée',
-            price: json['price'] ?? 0.0,
+            price: (json['price'] ?? 0.0).toDouble(),
             description: json['description'] ?? '',
             img: parseImages(json["images"]),
           );
@@ -66,10 +67,9 @@ class ListArticle extends StatelessWidget {
               elevation: 7,
               margin: const EdgeInsets.all(10),
               child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(article.img.isNotEmpty
-                  ? article.img.first
-                  : "https://via.placeholder.com/150"),
+                leading: ImageBuilder.buildCircleAvatar(
+                  article.img.isNotEmpty ? article.img.first : null,
+                  radius: 25,
                 ),
                 title: Text(article.title),
                 subtitle: Text(article.price.toString()),
@@ -101,9 +101,9 @@ List<Articles> _mockArticles() {
       Articles(
       id: 0,
       title: 'Maintenance',
-      price: 0,
+      price: 0.0,
       description: 'Maintenance',
-      img: ['https://via.placeholder.com/150'],
+      img: ["assets/images/imgError.jpg"],
     ),
   ];
 }

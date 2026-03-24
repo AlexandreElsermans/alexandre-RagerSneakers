@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'article.dart';
-import 'favorites.dart';
+import 'favorite.dart';
 import 'package:ragersneakers/UI/login.dart';
 import 'package:ragersneakers/UI/profil.dart';
 import 'package:ragersneakers/main.dart';

@@ -1,5 +1,5 @@
 class Articles {
-  static int nb = 0;
+  static double nb = 0;
 
   int id;
   String title;

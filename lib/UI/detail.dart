@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ragersneakers/models/articles.dart';
 import 'package:provider/provider.dart';
 import 'package:ragersneakers/models/favorites.dart';
+import 'package:ragersneakers/utils/image_builder.dart';
 
 class Detail extends StatelessWidget {
   final Articles article;
@@ -69,12 +70,12 @@ class Detail extends StatelessWidget {
                         Container(
                           height: 300,
                           width: double.infinity,
-                          child: Image.network(
-                            article.img.isNotEmpty
-                                ? article.img.first
-                                : "https://via.placeholder.com/150",
+                          child: ImageBuilder.buildImage(
+                            article.img.isNotEmpty ? article.img.first : null,
+                            height: 300,
+                            width: double.infinity,
                             fit: BoxFit.contain,
-                          ),
+                          )
                         ),
                       ],
                     ),
