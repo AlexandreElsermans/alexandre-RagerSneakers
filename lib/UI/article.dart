@@ -4,16 +4,10 @@ import 'dart:convert';
 import 'package:ragersneakers/models/articles.dart';
 import 'package:ragersneakers/UI/detail.dart';
 import 'package:ragersneakers/utils/image_builder.dart';
+import 'package:ragersneakers/utils/parse_img.dart';
 
 class ListArticle extends StatelessWidget {
   const ListArticle({super.key});
-
-  List<String> parseImages(dynamic raw) {
-    if (raw == null) return [];
-    if (raw is String) return [raw];
-    if (raw is List) return raw.map((e) => e.toString()).toList();
-    return [];
-  }
 
   Future<List<Articles>> fetchArticles() async {
     try {
@@ -30,7 +24,7 @@ class ListArticle extends StatelessWidget {
             title: json['title'] ?? 'Future arrivée',
             price: (json['price'] ?? 0.0).toDouble(),
             description: json['description'] ?? '',
-            img: parseImages(json["images"]),
+            img: Parseimg.parseImages(json["images"]),
           );
         }).toList();
       } else {
@@ -72,20 +66,31 @@ class ListArticle extends StatelessWidget {
                   radius: 25,
                 ),
                 title: Text(article.title),
-                subtitle: Text(article.price.toString()),
-                trailing: IconButton(
-                  icon: const Icon(Icons.more),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Detail(
-                          article.id,
-                          article: article
-                        ),
-                      ),
-                    );
-                  },
+                subtitle: Text("${article.price} €"),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.more),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Detail(
+                              article.id,
+                              article: article
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.shopping_cart),
+                      onPressed: () {
+                        
+                      },
+                    ),
+                  ],
                 ),
               ),
             );
