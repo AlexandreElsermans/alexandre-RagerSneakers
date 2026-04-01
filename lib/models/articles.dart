@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class Articles {
   static double nb = 0;
 
@@ -6,6 +8,7 @@ class Articles {
   double price;
   String description;
   List<String> img;
+  String? id_user;
 
   Articles({
     required this.id,
@@ -13,6 +16,7 @@ class Articles {
     required this.price,
     required this.description,
     required this.img,
+    this.id_user,
   });
 
   static Articles fromJson(Map<String, dynamic> json) {
@@ -32,6 +36,7 @@ class Articles {
       price: (json['price'] ?? 0).toDouble(),
       description: json['description'] ?? '',
       img: images,
+      id_user: json['id_user'],
     );
   }
 
@@ -42,6 +47,7 @@ class Articles {
       'price': price,
       'description': description,
       'image': img,
+      'id_user': id_user,
     };
   }
 

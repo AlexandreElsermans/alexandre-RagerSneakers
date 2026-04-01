@@ -15,7 +15,10 @@ class DAO {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(
+      path, version: 2,
+      onCreate: _createDB
+    );
   }
 
   static Future _createDB(Database db, int version) async {
@@ -27,7 +30,7 @@ class DAO {
         price DECIMAL(10, 2) NOT NULL,
         description VARCHAR(1056) NOT NULL,
         img VARCHAR(1056) NOT NULL,
-        user_id INTEGER NOT NULL
+        user_id TEXT NOT NULL
       )
     ''');
   }

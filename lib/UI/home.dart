@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'article.dart';
 import 'favorite.dart';
+import 'shopping_cart.dart';
 import 'package:ragersneakers/UI/login.dart';
 import 'package:ragersneakers/UI/profil.dart';
 import 'package:ragersneakers/main.dart';
@@ -25,6 +26,7 @@ class _HomeState extends State<Home> {
     pages = <Widget>[
       const ListArticle(),
       const FavoritesPage(),
+      const ShoppingCartPage(),
     ];
   }
 
@@ -82,7 +84,11 @@ class _HomeState extends State<Home> {
               NavigationRailDestination(
                 icon: Icon(Icons.favorite_border),
                 label: Text('Favoris'),
-              )
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.shopping_cart),
+                label: Text('Panier'),
+              ),
             ],
           ),
           Expanded(

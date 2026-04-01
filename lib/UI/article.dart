@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:ragersneakers/main.dart';
 import 'dart:convert';
 import 'package:ragersneakers/models/articles.dart';
 import 'package:ragersneakers/UI/detail.dart';
+import 'package:ragersneakers/models/shopping_cart.dart';
 import 'package:ragersneakers/utils/image_builder.dart';
 import 'package:ragersneakers/utils/parse_img.dart';
 
@@ -84,10 +87,23 @@ class ListArticle extends StatelessWidget {
                         );
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.shopping_cart),
-                      onPressed: () {
-                        
+                    Consumer<ShoppingCart>(
+                      builder: (context, cart, child) {
+                        final isInCart = cart.isInCart(article);
+                        return IconButton(
+                          icon: Icon(
+                            isInCart ? Icons.shopping_cart : Icons.shopping_cart_outlined,
+                            color: isInCart ? Colors.green : null,
+                          ),
+                          onPressed: () {
+                            if (!isInCart) {
+                              cart.addToCart(article);
+                              context.showSnackBar('Ajouté à votre panier');
+                            } else {
+                              context.showSnackBar('Article déjà dans votre panier');
+                            }
+                          },
+                        );
                       },
                     ),
                   ],

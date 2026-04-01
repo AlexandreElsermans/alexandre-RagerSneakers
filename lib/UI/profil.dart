@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../main.dart';
 import 'avatar.dart';
+import 'histo_achat.dart';
 
 
 class ProfileForm extends StatefulWidget {
@@ -28,7 +29,6 @@ class ProfileFormState extends State<ProfileForm> {
     super.dispose();
   }
 
-  // Chargement du profil depuis Supabase
   Future<void> _loadProfile() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
@@ -57,7 +57,6 @@ class ProfileFormState extends State<ProfileForm> {
     }
   }
 
-  // Sauvegarde du profil via upsert (insert ou update)
   Future<void> _saveProfile() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     
@@ -84,7 +83,6 @@ class ProfileFormState extends State<ProfileForm> {
     setState(() => _loading = false);
   }
 
-  // Mise à jour de l'URL d'avatar après upload
   Future<void> _onUpload(String imageUrl) async {
   try {
     final userId = supabase.auth.currentUser!.id;
@@ -109,7 +107,9 @@ class ProfileFormState extends State<ProfileForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profil')),
+      appBar: AppBar(
+        title: const Text('Profil')
+      ),
       body: _loading
         ? const Center(child: CircularProgressIndicator())
         : ListView(
@@ -118,18 +118,43 @@ class ProfileFormState extends State<ProfileForm> {
               vertical: 20
             ),
             children: [
-              Avatar(imageUrl: _avatarUrl, onUpload: _onUpload),
+              Avatar(
+                imageUrl: _avatarUrl,
+                onUpload: _onUpload
+              ),
+              
               const SizedBox(height: 16),
+              
               TextFormField(
                 controller: _usernameController,
                 decoration: const InputDecoration(
                   label: Text('Nom d\'utilisateur')
                 ),
               ),
+              
               const SizedBox(height: 16),
-              ElevatedButton(onPressed: _saveProfile, child: const
-              Text('Sauvegarder')),
+
+              ElevatedButton(
+                onPressed: _saveProfile,
+                child: const Text('Sauvegarder')
+              ),
+
               const SizedBox(height: 16),
+
+              OutlinedButton(
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HistoAchat(),
+                    ),
+                  ),
+                },
+                child: const Text('Historique de vos achats'),
+              ),
+
+              const SizedBox(height: 16),
+
               TextButton(
                 onPressed: () {
                   supabase.auth.signOut();

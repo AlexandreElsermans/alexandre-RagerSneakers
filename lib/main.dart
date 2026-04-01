@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ragersneakers/models/shopping_cart.dart';
 import 'UI/home.dart';
 import 'package:provider/provider.dart';
 import 'models/favorites.dart';
@@ -13,8 +14,11 @@ void main() async {
   );
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => Favorites(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Favorites()),
+        ChangeNotifierProvider(create: (context) => ShoppingCart()),
+      ],
       child: const MyStore(),
     )
   );
