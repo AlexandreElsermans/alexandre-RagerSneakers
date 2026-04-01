@@ -24,12 +24,13 @@ class Articles {
     
     if (json['img'] != null) {
       if (json['img'] is List) {
-        images = (json['img'] as List).map((e) => e.toString()).toList();
+        images = (json['img'] as List).map((i) => i.toString()).toList();
       } else if (json['img'] is String) {
-        if ((json['img']).contains(',')) {
-          images = ([json['img']] as String).split(',');
+        String imgString = json['img'] as String;
+        if (imgString.contains(',')) {
+          images = imgString.split(',');
         } else {
-          images = json['img'];
+          images = [imgString];
         }
       }
     }
