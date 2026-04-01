@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:ragersneakers/main.dart';
 import 'dart:convert';
 import 'package:ragersneakers/models/articles.dart';
 import 'package:ragersneakers/UI/detail.dart';
+import 'package:ragersneakers/models/shopping_cart.dart';
+import 'package:ragersneakers/utils/image_builder.dart';
+import 'package:ragersneakers/utils/parse_img.dart';
 
 class ListArticle extends StatelessWidget {
   const ListArticle({super.key});
-
-  List<String> parseImages(dynamic raw) {
-    if (raw == null) return [];
-    if (raw is String) return [raw];
-    if (raw is List) return raw.map((e) => e.toString()).toList();
-    return [];
-  }
 
   Future<List<Articles>> fetchArticles() async {
     try {
@@ -27,9 +25,9 @@ class ListArticle extends StatelessWidget {
           return Articles(
             id: json['id'] ?? 0,
             title: json['title'] ?? 'Future arrivée',
-            price: json['price'] ?? 0.0,
+            price: (json['price'] ?? 0.0).toDouble(),
             description: json['description'] ?? '',
-            img: parseImages(json["images"]),
+            img: Parseimg.parseImages(json["images"]),
           );
         }).toList();
       } else {
@@ -66,26 +64,49 @@ class ListArticle extends StatelessWidget {
               elevation: 7,
               margin: const EdgeInsets.all(10),
               child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(article.img.isNotEmpty
-                  ? article.img.first
-                  : "https://via.placeholder.com/150"),
+                leading: ImageBuilder.buildCircleAvatar(
+                  article.img.isNotEmpty ? article.img.first : null,
+                  radius: 25,
                 ),
                 title: Text(article.title),
-                subtitle: Text(article.price.toString()),
-                trailing: IconButton(
-                  icon: const Icon(Icons.more),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Detail(
-                          article.id,
-                          article: article
-                        ),
-                      ),
-                    );
-                  },
+                subtitle: Text("${article.price} €"),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.more),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Detail(
+                              article.id,
+                              article: article
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Consumer<ShoppingCart>(
+                      builder: (context, cart, child) {
+                        final isInCart = cart.isInCart(article);
+                        return IconButton(
+                          icon: Icon(
+                            isInCart ? Icons.shopping_cart : Icons.shopping_cart_outlined,
+                            color: isInCart ? Colors.green : null,
+                          ),
+                          onPressed: () {
+                            if (!isInCart) {
+                              cart.addToCart(article);
+                              context.showSnackBar('Ajouté à votre panier');
+                            } else {
+                              context.showSnackBar('Article déjà dans votre panier');
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
             );
@@ -101,9 +122,9 @@ List<Articles> _mockArticles() {
       Articles(
       id: 0,
       title: 'Maintenance',
-      price: 0,
+      price: 0.0,
       description: 'Maintenance',
-      img: ['https://via.placeholder.com/150'],
+      img: ["assets/images/imgError.jpg"],
     ),
   ];
 }

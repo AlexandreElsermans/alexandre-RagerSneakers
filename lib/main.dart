@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:ragersneakers/models/shopping_cart.dart';
 import 'UI/home.dart';
 import 'package:provider/provider.dart';
 import 'models/favorites.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialisation obligatoire pour Windows
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
 
   await Supabase.initialize(
     url: 'https://zetkuplmaywroqddlwvl.supabase.co',
@@ -13,8 +19,11 @@ void main() async {
   );
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => Favorites(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Favorites()),
+        ChangeNotifierProvider(create: (context) => ShoppingCart()),
+      ],
       child: const MyStore(),
     )
   );

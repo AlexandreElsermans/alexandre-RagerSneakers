@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ragersneakers/models/articles.dart';
 import 'package:ragersneakers/models/favorites.dart';
+import 'package:ragersneakers/utils/image_builder.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});
@@ -32,11 +33,9 @@ class FavoriteProductTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        leading: CircleAvatar(
-                  backgroundImage: NetworkImage(articleUIFavorites.img.isNotEmpty
-                  ? articleUIFavorites.img.first
-                  : "https://via.placeholder.com/150"),
-                ),
+        leading: ImageBuilder.buildCircleAvatar(
+          articleUIFavorites.img.isNotEmpty ? articleUIFavorites.img.first : null,
+        ),
         title: Text(
           articleUIFavorites.title,
           key: Key('favorites_text_$articleUIFavorites'),

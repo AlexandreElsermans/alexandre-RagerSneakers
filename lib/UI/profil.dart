@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../main.dart';
 import 'avatar.dart';
+import 'histo_achat.dart';
 
 
 class ProfileForm extends StatefulWidget {
@@ -28,36 +29,34 @@ class ProfileFormState extends State<ProfileForm> {
     super.dispose();
   }
 
-    // Chargement du profil depuis Supabase
-    Future<void> _loadProfile() async {
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
+  Future<void> _loadProfile() async {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
 
-      try {
-        final userId = supabase.auth.currentUser!.id;
-        final data = await supabase
-          .from('profiles')
-          .select()
-          .match({'id': userId})
-          .maybeSingle();
-        setState(() {
-          if (data != null) {
-            _usernameController.text = data['username'] ?? '';
-            _avatarUrl = (data['avatar_url'] ?? '') as String;
-          }
-          _loading = false;
-        });
-      } catch (e) {
-        setState(() => _loading = false);
-        if (mounted) {
-            scaffoldMessenger.showSnackBar(const SnackBar(
-              content: Text('Error occurred while getting profile'),
-              backgroundColor: Colors.red,
-            ));
+    try {
+      final userId = supabase.auth.currentUser!.id;
+      final data = await supabase
+        .from('profiles')
+        .select()
+        .match({'id_user': userId})
+        .maybeSingle();
+      setState(() {
+        if (data != null) {
+          _usernameController.text = data['username'] ?? '';
+          _avatarUrl = (data['avatar_url'] ?? '') as String;
         }
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() => _loading = false);
+      if (mounted) {
+          scaffoldMessenger.showSnackBar(const SnackBar(
+            content: Text('Erreur détectée lors du chargement du profil'),
+            backgroundColor: Colors.red,
+          ));
       }
     }
+  }
 
-  // Sauvegarde du profil via upsert (insert ou update)
   Future<void> _saveProfile() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     
@@ -65,26 +64,25 @@ class ProfileFormState extends State<ProfileForm> {
     try {
       final userId = supabase.auth.currentUser!.id;
       await supabase.from('profiles').upsert({
-        'id': userId,
+        'id_user': userId,
         'username': _usernameController.text,
         'updated_at': DateTime.now().toIso8601String(),
       });
     
       if (mounted) {
         scaffoldMessenger.showSnackBar(
-          const SnackBar(content: Text('Saved profile')),
+          const SnackBar(content: Text('Profil sauvegardé avec succès')),
         );
       }
     } catch (e) {
       scaffoldMessenger.showSnackBar(const SnackBar(
-        content: Text('Error saving profile'),
+        content: Text('Erreur détectée lors de la sauvegarde'),
         backgroundColor: Colors.red,
       ));
     }
     setState(() => _loading = false);
   }
 
-  // Mise à jour de l'URL d'avatar après upload
   Future<void> _onUpload(String imageUrl) async {
   try {
     final userId = supabase.auth.currentUser!.id;
@@ -93,12 +91,12 @@ class ProfileFormState extends State<ProfileForm> {
       'avatar_url': imageUrl,
     });
     
-    if (mounted) context.showSnackBar('Updated your profile image!');
+    if (mounted) context.showSnackBar('Votre avatar a été mis à jour');
   } on PostgrestException catch (error) {
     if (mounted) context.showSnackBar(error.message, isError: true);
   } catch (error) {
     if (mounted) {
-      context.showSnackBar('Unexpected error occurred', isError: true);
+      context.showSnackBar('Erreur détectée', isError: true);
     }
   }
   
@@ -109,7 +107,9 @@ class ProfileFormState extends State<ProfileForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(
+        title: const Text('Profil')
+      ),
       body: _loading
         ? const Center(child: CircularProgressIndicator())
         : ListView(
@@ -118,24 +118,49 @@ class ProfileFormState extends State<ProfileForm> {
               vertical: 20
             ),
             children: [
-              Avatar(imageUrl: _avatarUrl, onUpload: _onUpload),
+              Avatar(
+                imageUrl: _avatarUrl,
+                onUpload: _onUpload
+              ),
+              
               const SizedBox(height: 16),
+              
               TextFormField(
                 controller: _usernameController,
                 decoration: const InputDecoration(
-                  label: Text('Username')
+                  label: Text('Nom d\'utilisateur')
                 ),
               ),
+              
               const SizedBox(height: 16),
-              ElevatedButton(onPressed: _saveProfile, child: const
-              Text('Save')),
+
+              ElevatedButton(
+                onPressed: _saveProfile,
+                child: const Text('Sauvegarder')
+              ),
+
               const SizedBox(height: 16),
+
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HistoAchat(),
+                    ),
+                  );
+                },
+                child: const Text('Historique de vos achats'),
+              ),
+
+              const SizedBox(height: 16),
+
               TextButton(
                 onPressed: () {
                   supabase.auth.signOut();
                   Navigator.pop(context);
                 },
-                child: const Text('Sign Out'),
+                child: const Text('Se déconnecter'),
               ),
             ],
           ),
