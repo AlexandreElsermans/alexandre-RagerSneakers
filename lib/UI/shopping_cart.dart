@@ -154,9 +154,10 @@ class ShoppingCartPage extends StatelessWidget {
         return;
       }
       
-      while (cart.cartCount >= 1) {
-        await LinkToPurchaseHisto.insertShoppingCart(cart.articleInCart[0]);
-        cart.removeFromCart(cart.articleInCart[0]);
+      final articleToSave = List<Articles>.from(cart.articleInCart);
+    
+      for (Articles a in articleToSave) {
+        await LinkToPurchaseHisto.insertShoppingCart(a);
       }
       cart.clearCart();
       
@@ -167,7 +168,6 @@ class ShoppingCartPage extends StatelessWidget {
           duration: Duration(seconds: 2),
         ),
       );
-      Navigator.pop(context);
       
     } catch (e) {
       context.showSnackBar('Erreur lors de la validation: $e', isError: true);  

@@ -8,7 +8,7 @@ class Articles {
   double price;
   String description;
   List<String> img;
-  String? id_user;
+  String? user_id;
 
   Articles({
     required this.id,
@@ -16,38 +16,42 @@ class Articles {
     required this.price,
     required this.description,
     required this.img,
-    this.id_user,
+    this.user_id,
   });
 
   static Articles fromJson(Map<String, dynamic> json) {
     List<String> images = [];
     
-    if (json['image'] != null) {
-      if (json['image'] is List) {
-        images = (json['image'] as List).map((e) => e.toString()).toList();
-      } else if (json['image'] is String) {
-        images = [json['image']];
+    if (json['img'] != null) {
+      if (json['img'] is List) {
+        images = (json['img'] as List).map((e) => e.toString()).toList();
+      } else if (json['img'] is String) {
+        if ((json['img']).contains(',')) {
+          images = ([json['img']] as String).split(',');
+        } else {
+          images = json['img'];
+        }
       }
     }
 
     return Articles(
-      id: json['id'] ?? 0,
+      id: json['article_id'] ?? 0,
       title: json['title'] ?? '',
       price: (json['price'] ?? 0).toDouble(),
       description: json['description'] ?? '',
       img: images,
-      id_user: json['id_user'],
+      user_id: json['user_id'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'article_id': id,
       'title': title,
       'price': price,
       'description': description,
-      'image': img,
-      'id_user': id_user,
+      'img': img.join(','),
+      'user_id': user_id,
     };
   }
 

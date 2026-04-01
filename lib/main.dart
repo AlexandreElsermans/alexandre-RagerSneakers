@@ -4,9 +4,14 @@ import 'UI/home.dart';
 import 'package:provider/provider.dart';
 import 'models/favorites.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialisation obligatoire pour Windows
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
 
   await Supabase.initialize(
     url: 'https://zetkuplmaywroqddlwvl.supabase.co',

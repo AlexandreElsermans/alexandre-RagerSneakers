@@ -39,7 +39,7 @@ class _HistoAchatPageState extends State<HistoAchat> {
       final profileData = await supabase
           .from('profiles')
           .select('id_user')
-          .eq('id', user.id)
+          .eq('id_user', user.id)
           .maybeSingle();
       
       String? id_user;
@@ -106,23 +106,23 @@ class _HistoAchatPageState extends State<HistoAchat> {
       itemCount: _achats.length,
       padding: const EdgeInsets.all(16),
       itemBuilder: (context, index) {
-        final purchase = _achats[index];
+        final achat = _achats[index];
         return Card(
           margin: const EdgeInsets.only(bottom: 12),
           elevation: 4,
           child: ListTile(
             leading: ImageBuilder.buildCircleAvatar(
-              purchase.img.isNotEmpty ? purchase.img.first : null,
+              achat.img.isNotEmpty ? achat.img.first : null,
               radius: 30,
             ),
             title: Text(
-              purchase.title,
+              achat.title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children : [
-                Text('${purchase.price.toStringAsFixed(2)} €'),
+                Text('${achat.price.toStringAsFixed(2)} €'),
               ],
             ),
             trailing: const Icon(Icons.check_circle, color: Colors.green),

@@ -1,7 +1,6 @@
 import 'package:ragersneakers/main.dart';
 import 'package:ragersneakers/models/articles.dart';
 import 'package:ragersneakers/models/database/dao.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LinkToPurchaseHisto {
 
@@ -43,7 +42,7 @@ class LinkToPurchaseHisto {
     final userList  = await supabase
       .from('profiles')
       .select('id_user')
-      .eq('id', currentUser!.id);
+      .eq('id_user', currentUser!.id);
 
     if (userList.isNotEmpty) {
       idUser = userList.first['id_user'].toString();
@@ -51,7 +50,7 @@ class LinkToPurchaseHisto {
       idUser = currentUser.id;
     }
 
-    article.id_user = idUser;
+    article.user_id = idUser;
 
     await db.insert("historique_achat", article.toJson());
     return article;
@@ -61,7 +60,7 @@ class LinkToPurchaseHisto {
     final db = await DAO.database;
     return await db.delete(
       "historique_achat",
-      where: 'id= ?',
+      where: 'id_histo_achat=?',
       whereArgs: [id],
     );
   }

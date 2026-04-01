@@ -37,7 +37,7 @@ class ProfileFormState extends State<ProfileForm> {
       final data = await supabase
         .from('profiles')
         .select()
-        .match({'id': userId})
+        .match({'id_user': userId})
         .maybeSingle();
       setState(() {
         if (data != null) {
@@ -64,7 +64,7 @@ class ProfileFormState extends State<ProfileForm> {
     try {
       final userId = supabase.auth.currentUser!.id;
       await supabase.from('profiles').upsert({
-        'id': userId,
+        'id_user': userId,
         'username': _usernameController.text,
         'updated_at': DateTime.now().toIso8601String(),
       });
@@ -142,13 +142,13 @@ class ProfileFormState extends State<ProfileForm> {
               const SizedBox(height: 16),
 
               OutlinedButton(
-                onPressed: () => {
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const HistoAchat(),
                     ),
-                  ),
+                  );
                 },
                 child: const Text('Historique de vos achats'),
               ),
