@@ -63,8 +63,5 @@ class Articles {
       other.id == id &&
       other.title == title &&
       other.price == price;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ title.hashCode ^ price.hashCode;
+  } 
 }
